@@ -99,7 +99,7 @@ Once inside Ubuntu, follow the individual guide for your chosen agent:
 - [Claude Code Setup](https://github.com/fiozxr/claude-agent-android)
 - [Codex Setup](https://github.com/fiozxr/codex-agent-android)
 - [PI CLI Setup](https://github.com/fiozxr/pi-agent-android)
-- [Antigravity Setup](https://github.com/fiozxr/pi-agent-android)
+- [Antigravity Setup](https://github.com/fiozxr/antigravity-agent-android)
 
 ## Usage
 
