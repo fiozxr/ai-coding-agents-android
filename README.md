@@ -45,7 +45,7 @@ Each agent has its own dedicated README with a one-line `setup.sh` and a manual 
 
 - An Android device (mid-range or flagship recommended for best performance)
 - [Termux](https://f-droid.org/packages/com.termux/) installed from **F-Droid** (not Google Play)
-- ~500 MB free storage for the Ubuntu rootfs
+- ~500 MB free storage for the Ubuntu rootfs, overall 2GB requires for first one.
 - Internet connection
 
 > ⚠️ **Important:** Install Termux from F-Droid, not the Google Play Store. The Play Store version is deprecated and no longer maintained.
