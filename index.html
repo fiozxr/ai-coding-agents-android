@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- ============ SEO ============ -->
+<title>Run AI Coding Agents on Android — Claude, Codex, PI &amp; More via Termux</title>
+<meta name="description" content="Step-by-step guides and install scripts to run Claude Code, Codex, PI CLI, Antigravity and other AI coding agents on Android using Termux and proot-distro Ubuntu.">
+<meta name="keywords" content="termux, android, ai coding agent, claude code, codex, pi cli, antigravity, proot-distro, ubuntu on android, run ai on phone, mobile development">
+<meta name="author" content="ai-coding-agents-termux">
+<link rel="canonical" href="https://github.com/fiozxr/ai-coding-agents-termux">
+<meta name="robots" content="index, follow">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Run AI Coding Agents on Android — Claude, Codex, PI &amp; More via Termux">
+<meta property="og:description" content="Free, open-source guides to run Claude Code, Codex, PI CLI and Antigravity on your Android phone with Termux + proot-distro Ubuntu.">
+<meta property="og:url" content="https://github.com/your-username/ai-coding-agents-termux">
+<meta property="og:site_name" content="AI Coding Agents · Termux">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Run AI Coding Agents on Android via Termux">
+<meta name="twitter:description" content="Claude, Codex, PI CLI, Antigravity — install guides for Android + Termux + Ubuntu.">
+
+<!-- Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Run AI Coding Agents on Android via Termux",
+  "description": "Guides and scripts to run Claude Code, Codex, PI CLI, and Antigravity on Android using Termux and proot-distro Ubuntu.",
+  "about": ["Termux", "Android", "AI coding agents", "Claude Code", "Codex", "PI CLI", "Antigravity"],
+  "author": { "@type": "Organization", "name": "ai-coding-agents-termux" }
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg: #0B0E0C;
+    --surface: #12160F;
+    --surface-2: #191E15;
+    --line: #262E22;
+    --text: #E7ECE3;
+    --muted: #8B9686;
+    --accent: #A4C639;   /* android green */
+    --accent-dim: #7C9A2C;
+    --amber: #F2A65A;
+    --radius: 3px;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  code, .mono, h1, h2, .eyebrow, .btn, .prompt, .terminal, nav a, footer{
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  a{ color: inherit; }
+
+  .wrap{ max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- nav ---------- */
+  nav{
+    position: sticky; top:0; z-index: 10;
+    background: rgba(11,14,12,0.85);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav .wrap{ display:flex; align-items:center; justify-content:space-between; height:56px; }
+  nav .brand{ font-weight:700; font-size:14px; letter-spacing:0.02em; }
+  nav .brand span{ color: var(--accent); }
+  nav .links{ display:flex; gap:22px; font-size:13px; color: var(--muted); }
+  nav .links a:hover{ color: var(--text); }
+
+  /* ---------- hero ---------- */
+  header.hero{ padding: 72px 0 56px; border-bottom: 1px solid var(--line); }
+  .hero-grid{ display:grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items:center; }
+  @media (max-width: 860px){ .hero-grid{ grid-template-columns: 1fr; } }
+
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:12px; color: var(--accent);
+    border:1px solid var(--accent-dim); border-radius: var(--radius);
+    padding: 4px 10px; margin-bottom: 20px;
+  }
+  .eyebrow::before{ content:"●"; font-size:8px; }
+
+  h1{
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 800; line-height:1.15; margin: 0 0 18px;
+    letter-spacing: -0.01em;
+  }
+  h1 .hl{ color: var(--accent); }
+
+  .lede{ color: var(--muted); font-size:16px; max-width: 46ch; margin-bottom: 28px; }
+
+  .cta-row{ display:flex; gap:12px; flex-wrap:wrap; }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:13px; font-weight:600; text-decoration:none;
+    padding: 12px 18px; border-radius: var(--radius);
+    border:1px solid var(--accent); transition: all .15s ease;
+  }
+  .btn.primary{ background: var(--accent); color:#0B0E0C; }
+  .btn.primary:hover{ background: var(--accent-dim); border-color: var(--accent-dim); }
+  .btn.ghost{ color: var(--text); border-color: var(--line); }
+  .btn.ghost:hover{ border-color: var(--muted); }
+
+  /* ---------- terminal ---------- */
+  .terminal{
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    overflow:hidden;
+    box-shadow: 0 20px 60px -20px rgba(164,198,57,0.08);
+  }
+  .terminal .bar{
+    display:flex; align-items:center; gap:6px;
+    padding: 10px 14px; border-bottom:1px solid var(--line);
+    background: var(--surface-2);
+  }
+  .terminal .dot{ width:9px; height:9px; border-radius:50%; background:#3A4232; }
+  .terminal .bar span{ margin-left:10px; font-size:11px; color: var(--muted); }
+  .terminal pre{
+    margin:0; padding: 20px 18px 22px;
+    font-size: 12.5px; color:#C9D6BE; min-height: 210px;
+    white-space: pre-wrap; word-break: break-word;
+  }
+  .terminal .prompt{ color: var(--accent); }
+  .terminal .cursor{ display:inline-block; width:7px; height:14px; background:var(--accent); vertical-align:middle; margin-left:2px; animation: blink 1s steps(1) infinite; }
+  @media (prefers-reduced-motion: reduce){ .terminal .cursor{ animation:none; } }
+  @keyframes blink{ 50%{ opacity:0; } }
+
+  /* ---------- sections ---------- */
+  section{ padding: 64px 0; border-bottom: 1px solid var(--line); }
+  .section-head{ max-width: 60ch; margin-bottom: 40px; }
+  .section-head .eyebrow{ margin-bottom: 14px; }
+  h2{ font-size: clamp(22px, 3vw, 30px); margin: 0 0 10px; letter-spacing:-0.01em; }
+  .section-head p{ color: var(--muted); font-size:15px; margin:0; }
+
+  /* why grid */
+  .why-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  @media (max-width: 780px){ .why-grid{ grid-template-columns: 1fr; } }
+  .why-card{ border:1px solid var(--line); border-radius: var(--radius); padding: 22px; background: var(--surface); }
+  .why-card .tag{ color: var(--amber); font-size:11px; font-family:'JetBrains Mono'; margin-bottom:10px; display:block; }
+  .why-card h3{ font-size:15px; margin: 0 0 8px; }
+  .why-card p{ font-size:13.5px; color: var(--muted); margin:0; }
+
+  /* agents grid */
+  .agents-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(230px,1fr)); gap:18px; }
+  .agent-card{
+    border:1px solid var(--line); border-radius: var(--radius);
+    background: var(--surface); padding: 20px;
+    display:flex; flex-direction:column; gap:12px;
+    transition: border-color .15s ease;
+  }
+  .agent-card:hover{ border-color: var(--accent-dim); }
+  .agent-card .badge{
+    width:34px; height:34px; border-radius:6px;
+    display:flex; align-items:center; justify-content:center;
+    background: var(--surface-2); color: var(--accent);
+    font-weight:700; font-size:13px; border:1px solid var(--line);
+  }
+  .agent-card h3{ font-size:16px; margin:0; }
+  .agent-card p{ font-size:13px; color:var(--muted); margin:0; }
+  .agent-card .cmd{ font-size:11.5px; color:#B8C7A9; background:#0E120C; border:1px solid var(--line); padding:6px 9px; border-radius:3px; }
+  .agent-card .status{ font-size:10.5px; color: var(--muted); letter-spacing:.04em; text-transform:uppercase; }
+  .agent-card.soon{ opacity:.55; }
+
+  /* steps */
+  .steps{ counter-reset: step; display:grid; gap:0; }
+  .step{ display:grid; grid-template-columns: 56px 1fr; gap:20px; padding: 22px 0; border-top:1px solid var(--line); }
+  .step:first-child{ border-top:none; }
+  .step .num{ font-family:'JetBrains Mono'; color: var(--accent); font-size:22px; font-weight:700; }
+  .step h3{ margin:0 0 6px; font-size:16px; }
+  .step p{ margin:0; color: var(--muted); font-size:14px; max-width: 60ch; }
+  .step code{ background:#0E120C; border:1px solid var(--line); padding:2px 6px; border-radius:3px; font-size:12.5px; color:#C9D6BE; }
+
+  /* faq */
+  .faq-item{ border-top:1px solid var(--line); padding: 18px 0; }
+  .faq-item:first-child{ border-top:none; }
+  .faq-item summary{ cursor:pointer; font-size:15px; font-weight:600; list-style:none; display:flex; justify-content:space-between; align-items:center; }
+  .faq-item summary::-webkit-details-marker{ display:none; }
+  .faq-item summary::after{ content:"+"; color: var(--accent); font-size:18px; font-family:'JetBrains Mono'; }
+  .faq-item[open] summary::after{ content:"–"; }
+  .faq-item p{ color: var(--muted); font-size:14px; margin: 12px 0 0; max-width: 62ch; }
+
+  footer{ padding: 40px 0 60px; }
+  .footer-row{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; }
+  footer .muted{ color: var(--muted); font-size:12.5px; }
+  footer .links{ display:flex; gap:18px; font-size:13px; }
+  footer .links a{ color: var(--muted); text-decoration:none; }
+  footer .links a:hover{ color: var(--text); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">AI-Agents-Android</div>
+    <div class="links">
+      <a href="#agents">Agents</a>
+      <a href="#how">How it works</a>
+      <a href="#faq">FAQ</a>
+      <a href="https://github.com/fiozxr/ai-coding-agents-android">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Open source · Agents · Android</div>
+      <h1>Run AI coding agents<br>on Your <span class="hl">Android phone.</span></h1>
+      <p class="lede">Claude Code, Codex, PI CLI, Antigravity — install and run them all inside a full Ubuntu shell on Android, no root required.</p>
+      <div class="cta-row">
+        <a class="btn primary" href="#agents">Browse agents</a>
+        <a class="btn ghost" href="https://github.com/fiozxr/ai-coding-agents-android">View on GitHub</a>
+      </div>
+    </div>
+
+    <div class="terminal">
+      <div class="bar">
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <span>termux</span>
+      </div>
+      <pre id="typer"></pre>
+    </div>
+  </div>
+</header>
+
+<section id="why">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Why Termux</div>
+      <h2>Your phone is a Linux box you already own</h2>
+      <p>No cloud sandbox, no extra device, no subscription just to get a shell. Termux plus proot-distro gives you a real Ubuntu environment, and these agents run in it exactly like they would on a laptop.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card">
+        <span class="tag">// no root</span>
+        <h3>Nothing to unlock</h3>
+        <p>Termux runs entirely in userspace. No rooting, no unlocked bootloader, no voided warranty.</p>
+      </div>
+      <div class="why-card">
+        <span class="tag">// isolated</span>
+        <h3>Sandboxed by design</h3>
+        <p>proot-distro keeps Ubuntu contained from the rest of your Android install — remove it in one command.</p>
+      </div>
+      <div class="why-card">
+        <span class="tag">// portable</span>
+        <h3>Same commands everywhere</h3>
+        <p>The exact npm and curl installs you'd run on a laptop work unchanged inside the Ubuntu shell.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="agents">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Supported agents</div>
+      <h2>Pick an agent, follow its guide</h2>
+      <p>Each agent has its own README with a one-line <code>setup.sh</code> and a manual step-by-step path.</p>
+    </div>
+    <div class="agents-grid">
+
+      <div class="agent-card">
+        <div class="badge">C</div>
+        <h3>Claude Code</h3>
+        <p>Anthropic's terminal coding agent, run from your Ubuntu shell.</p>
+        <div class="cmd">$ claude</div>
+        <span class="status">Guide available</span>
+      </div>
+
+      <div class="agent-card">
+        <div class="badge">X</div>
+        <h3>Codex</h3>
+        <p>OpenAI's CLI coding agent, installed the same way as the rest.</p>
+        <div class="cmd">$ codex</div>
+        <span class="status">Guide available</span>
+      </div>
+
+      <div class="agent-card">
+        <div class="badge">P</div>
+        <h3>PI CLI</h3>
+        <p>Lightweight coding agent, installable via script or npm.</p>
+        <div class="cmd">$ pi</div>
+        <span class="status">Guide available</span>
+      </div>
+
+      <div class="agent-card">
+        <div class="badge">A</div>
+        <h3>Antigravity</h3>
+        <p>Agent runtime for autonomous coding workflows.</p>
+        <div class="cmd">$ antigravity</div>
+        <span class="status">Guide available</span>
+      </div>
+
+      <div class="agent-card soon">
+        <div class="badge">+</div>
+        <h3>More agents</h3>
+        <p>New guides added as new CLI agents ship.</p>
+        <div class="cmd">$ coming soon</div>
+        <span class="status">In progress</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">How it works</div>
+      <h2>Three layers, one shell</h2>
+      <p>Every agent in this guide sits on the same foundation, so once you've set it up once, adding another agent takes one command.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="num">01</div>
+        <div>
+          <h3>Termux gives you a terminal</h3>
+          <p>Installed from F-Droid, Termux provides a real package manager and shell on Android — the foundation everything else runs on.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="num">02</div>
+        <div>
+          <h3>proot-distro gives you Ubuntu</h3>
+          <p>A full Ubuntu userland, isolated from Android, so agents that expect a standard Linux environment just work: <code>proot-distro login ubuntu</code>.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="num">03</div>
+        <div>
+          <h3>Node.js gives you the agent</h3>
+          <p>Most agents ship as npm packages or install scripts. Install Node once, then install any agent in a single line.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">FAQ</div>
+      <h2>Common questions</h2>
+    </div>
+
+    <details class="faq-item" open>
+      <summary>Do I need a rooted phone?</summary>
+      <p>No. Termux and proot-distro both run without root access, on any Android device that can install apps from F-Droid.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Will this work on any Android phone?</summary>
+      <p>Yes, though performance depends on your device's RAM and CPU. Mid-range and flagship phones handle these agents comfortably.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Is this safe to run alongside my normal apps?</summary>
+      <p>Yes. proot-distro's Ubuntu environment is isolated in its own directory and doesn't touch the rest of your Android system. Removing it is a single command.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Can I run more than one agent at a time?</summary>
+      <p>Yes. All agents install into the same Ubuntu environment, so you can switch between <code>claude</code>, <code>codex</code>, <code>pi</code>, and <code>antigravity</code> freely.</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-row">
+    <div class="muted">© 2026 ai-coding-agents-android — open source, MIT licensed.</div>
+    <div class="links">
+      <a href="https://github.com/your-username/ai-coding-agents-termux">GitHub</a>
+      <a href="#agents">Agents</a>
+      <a href="#faq">FAQ</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var lines = [
+    { p: true,  t: "apt update -y && apt install proot-distro" },
+    { p: false, t: "proot-distro install ubuntu" },
+    { p: true,  t: "proot-distro login ubuntu" },
+    { p: false, t: "apt install nodejs -y" },
+    { p: true,  t: "npm install -g @earendil-works/pi-coding-agent" },
+    { p: false, t: "pi" }
+  ];
+  var el = document.getElementById('typer');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function render(finalOnly){
+    el.innerHTML = "";
+    lines.forEach(function(l){
+      var row = document.createElement('div');
+      row.innerHTML = (l.p ? '<span class="prompt">$ </span>' : '') + l.t;
+      el.appendChild(row);
+    });
+    var cur = document.createElement('span');
+    cur.className = 'cursor';
+    el.appendChild(cur);
+  }
+
+  if(reduce){ render(true); return; }
+
+  var i = 0, j = 0, out = [];
+  function typeNext(){
+    if(i >= lines.length){ 
+      el.innerHTML = out.join("") + '<span class="cursor"></span>';
+      return;
+    }
+    var line = lines[i];
+    if(j === 0 && line.p){ out.push('<span class="prompt">$ </span>'); }
+    if(j <= line.t.length){
+      var partial = out.slice();
+      partial.push(line.t.slice(0, j));
+      el.innerHTML = partial.join("").replace(/\n/g,'') + '<span class="cursor"></span>';
+      j++;
+      setTimeout(typeNext, 14 + Math.random()*18);
+    } else {
+      out.push(line.t + "\n");
+      i++; j = 0;
+      setTimeout(typeNext, 220);
+    }
+  }
+  typeNext();
+})();
+</script>
+
+</body>
+</html>
